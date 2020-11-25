@@ -12,27 +12,42 @@ Mirai两种,XQ一种,共三种
 
 ------
 ##Mirai篇:
-- 首先你应该有一个整合包
-- 然后解压出来看一下
-- 有config文件夹的是新版
-- 有config.txt的是原始版
-- 请自行对号入座
+- 首先你应该有一个整合包  
+然后解压出来看一下  
+有config文件夹的是新版  
+有config.txt的是原始版  
+请自行对号入座  
 
 ##新版:
-1. 怎么设置自动登录
-在你的骰娘目录下,你应该可以看见如下文件,如果用的是整合包
-config/console/autologin.yml
-如果不出意外,里面有
-plainPasswords:
- 123456789:abcdefghi
- md5Passwords:
- xxxxxxxxxxxxxxxxxxxxxx
-不用管下面的那个
-123456789换成你的骰娘qq
-abcdefghi换成你的骰娘密码
-中间的冒号记得别删
-这样就可以自动登录了
-2. 怎么设置master
+1. 怎么设置自动登录   
+ 在你的骰娘目录下  
+ 如果用的是整合包  
+ 你应该可以看见如下文件路径和文件  
+ config/console/autologin.yml  
+ 如果不出意外,里面有  
+ plainPasswords:  
+ 123456789:abcdefghi  
+ md5Passwords:  
+ xxxxxxxxxxxxxxxxxxxxxx  
+ 不用管下面的那个  
+ 123456789换成你的骰娘qq  
+ abcdefghi换成你的骰娘密码  中间的冒号记得别删  
+ 这样就可以自动登录了 
+ 2. 怎么设置master  
+ 当骰娘登录以后    
+ 你右键猫猫头   
+ 此时会跳出一个指令框   
+ 最下面应该会有   
+|         |     |
+| --------   | -----:   |
+| Dice!        |
+| ——————        |
+| 关于        |
+
+ 选中`Dice！`
+ 往右可以看见`Master模式切换`
+ 点下去,如果你能看见
+ `Master模式已开启`
 3. 怎么放图片和声音等
 4. 怎么更新骰娘
 5. 各个框架使用的协议与注意事项
