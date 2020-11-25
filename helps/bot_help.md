@@ -24,13 +24,14 @@ Mirai两种,XQ一种,共三种
   在你的骰娘目录下  
   如果用的是整合包  
   你应该可以看见如下文件路径和文件  
-  config/console/autologin.yml  
+   `config/console/autologin.yml`  
   如果不出意外,里面有  
-  plainPasswords:  
+   - plainPasswords:  
   123456789:abcdefghi  
   md5Passwords:  
   xxxxxxxxxxxxxxxxxxxxxx  
-  不用管下面的那个  
+  
+  - 不用管下面的那个  
   123456789换成你的骰娘qq  
   abcdefghi换成你的骰娘密码  中间的冒号记得别删  
   这样就可以自动登录了  
@@ -49,12 +50,10 @@ Mirai两种,XQ一种,共三种
    say 655057127 MiraiOK_published!   
    `----------`  
  
-  这样一段话  
-  在下面一行输入`login 123456789 abcdefgh`
-  再按一个回车,然后保存
-  即可
- 
- 
+  - 这样一段话  
+  在下面一行输入`login 123456789 abcdefgh`  
+  再按一个回车,然后保存  
+  即可  
  2. **怎么设置master**  
  当骰娘登录以后    
  你右键猫猫头   
