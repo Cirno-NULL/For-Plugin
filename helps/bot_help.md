@@ -31,7 +31,7 @@ Mirai两种,XQ一种,共三种
   md5Passwords:  
   xxxxxxxxxxxxxxxxxxxxxx  
   
-  -123456789换成你的骰娘qq  
+  - 123456789换成你的骰娘qq  
   abcdefghi换成你的骰娘密码  中间的冒号记得别删  
   这样就可以自动登录了  
  - **Mirai旧版**  
