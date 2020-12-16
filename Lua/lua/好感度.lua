@@ -41,20 +41,8 @@ end
 function get_old_save(path)
     local user_file = read_file(path) -- 读取用户文件内容
     local user_favor = split_favor(user_file) -- 分割成数组
-    if user_favor["date"] ~= os.date("%Y-%m-%d") then
-        user_favor["date"] = os.date("%Y-%m-%d")
-        user_favor["time"] = 0
-        user_favor["hour"] = ""
-    end
-    -- 存档时间处理,后续不需要处理时间了
-    if isnum(user_favor["time"]) ~= true then
-        user_favor["time"] = 0
-    else
-        user_favor["time"] = user_favor["time"] + 0
-    end
-    -- 用户本日存档次数处理,返回的是原始今日次数
-    if isnum(user_favor["favo"]) ~= true then --如果存档不是数字
-        user_favor["favo"] = "0" --好感度等于0
+    if isnum(user_favor["favo"]) ~= true then --如果好感度不是数字
+        user_favor["favo"] = 0 --好感度等于0
         if isnum(user_file) then --如果历史存档是数字
             user_favor["favo"] = user_file
         else
@@ -88,12 +76,7 @@ function get_new_save(path, patha)
     end
     --[[用户本日存档次数处理,返回的是原始今日次数]]
     if isnum(table["favor"]["favo"]) ~= true then --如果存档不是数字
-        table["favor"]["favo"] = "0" --好感度等于0
-        if isnum(text) then --如果历史存档是数字
-            table["favor"]["favo"] = text
-        else
-            table["favor"]["favo"] = 0
-        end
+        table["favor"]["favo"] = 0 --好感度等于0
     end
     --[[用户好感度处理,返回的是原始好感度,后面需要二次处理]]
     return table
@@ -102,10 +85,10 @@ end
 function set_path(msg)
     local old_path = dice.DiceDir() .. "\\user\\Cirno_plugin\\favor\\" -- 这里设置一下旧存档的初始地址
     local dir_path = dice.DiceDir() .. "\\user\\Cirno_plugin\\qq\\" -- 这里设置一下新存档的初始地址
-    local dir_path_p = dice.DiceDir() .. "\\user\\Cirno_plugin\\public\\" -- 这里是排行榜的初始地址
+    --local dir_path_p = dice.DiceDir() .. "\\user\\Cirno_plugin\\public\\" -- 这里是排行榜的初始地址
     dice.mkDir(dir_path) -- 初始化存档路径
-    dice.mkDir(dir_path_p) -- 初始化排行榜路径
-    return old_path, dir_path,dir_path_p
+    --dice.mkDir(dir_path_p) -- 初始化排行榜路径--才起了个头
+    return old_path, dir_path--,dir_path_p
 end
 --[[初始化地址]]
 function rcv_gift(msg)
