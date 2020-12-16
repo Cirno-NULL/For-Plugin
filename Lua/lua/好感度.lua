@@ -97,9 +97,8 @@ function get_new_save(path, patha)
 end
 --[[获取处理过的新存档]]
 function set_path(msg)
-    local old_path = dice.DiceDir() .. "\\user\\Cirno_plugin\\favor\\" -- 这里设置一下旧存档的初始地址
-    local dir_path = dice.DiceDir() .. "\\user\\Cirno_plugin\\qq\\" -- 这里设置一下新存档的初始地址
-    local dir_path_p = dice.DiceDir() .. "\\user\\Cirno_plugin\\public\\" -- 这里是排行榜的初始地址
+    local old_path = dice.DiceDir() .. "\\user\\Cirno_plugin\\favor\\" -- 这里设置一下存档的初始地址
+    local dir_path = dice.DiceDir() .. "\\user\\Cirno_plugin\\qq\\"
     dice.mkDir(dir_path) -- 初始化存档路径
     return old_path, dir_path
 end
