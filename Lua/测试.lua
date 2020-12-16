@@ -1,10 +1,12 @@
 command = {}
-function hitokoto(Msg)
-    dice.setPcName(Msg.fromQQ,-1,"coroutine.running( )")
-    Name = dice.getPcName(Msg.fromQQ,-1)
-    dice.setPcSkill(Msg.fromQQ,-1,"wow",3456)
-    dice.setPcSkill(Msg.fromQQ,-1,"wo",1234)
-    dice.setPcSkill(Msg.fromQQ,-1,"w",2345)
-    return "完成" .. Name
+function delete_file(path)
+    os.remove(path)
 end
-command["测试"] = "hitokoto"
+--[[删除文件,请谨慎使用]]
+function test()
+    local old_path = dice.DiceDir() .. "\\user\\Cirno_plugin\\favor\\" -- 这里设置一下旧存档的初始地址
+    local file_path = old_path .. "test.txt"
+    delete_file(file_path)
+    return "完成"
+end
+command["测试"] = "test"

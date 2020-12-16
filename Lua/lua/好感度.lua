@@ -22,6 +22,10 @@ function write_file(path, text)
     io.close(file) -- 关闭文件
 end
 --[[↑写入对应的文件]]
+function delete_file(path)
+    os.remove(path)
+end
+--[[删除文件,请谨慎使用]]
 function split_favor(s)
     local t = {}
     for k, v in string.gmatch(s, "(%w+)=(%d+)") do
@@ -35,7 +39,6 @@ function isnum(text)
 end
 --[[检查是不是数字]]
 function get_old_save(path)
-    local total = ""
     local user_file = read_file(path) -- 读取用户文件内容
     local user_favor = split_favor(user_file) -- 分割成数组
     if user_favor["date"] ~= os.date("%Y-%m-%d") then
@@ -77,13 +80,13 @@ function get_new_save(path, patha)
         table["favor"]["time"] = 0
         table["favor"]["hour"] = ""
     end
-    -- 处理好感度的时间和今日次数
+    --[[处理好感度的时间和今日次数]]
     if isnum(table["favor"]["time"]) ~= true then
         table["favor"]["time"] = 0
     else
         table["favor"]["time"] = table["favor"]["time"] + 0
     end
-    -- 用户本日存档次数处理,返回的是原始今日次数
+    --[[用户本日存档次数处理,返回的是原始今日次数]]
     if isnum(table["favor"]["favo"]) ~= true then --如果存档不是数字
         table["favor"]["favo"] = "0" --好感度等于0
         if isnum(text) then --如果历史存档是数字
@@ -92,7 +95,7 @@ function get_new_save(path, patha)
             table["favor"]["favo"] = 0
         end
     end
-    --用户好感度处理,返回的是原始好感度,后面需要二次处理
+    --[[用户好感度处理,返回的是原始好感度,后面需要二次处理]]
     return table
 end
 --[[获取处理过的新存档]]
@@ -118,14 +121,13 @@ function rcv_gift(msg)
     user_path = dir_path .. "Q" .. msg.fromQQ .. ".json" -- 新用户存档位置
     user_old_path = old_path .. msg.fromQQ .. ".txt" -- 旧用户存档位置
     user_table = get_new_save(user_path, user_old_path) -- 获得存档
-    
     if user_table["favor"]["time"] < today_favor_max then
         if user_table["favor"]["hour"] ~= os.date("%H") then
             user_table["favor"]["favo"] = user_table["favor"]["favo"] + favor_once -- 好感度+1
             user_table["favor"]["time"] = user_table["favor"]["time"] + favor_once -- 次数+1
             user_table["favor"]["hour"] = os.date("%H") -- 时间更新
             user_save = json.encode(user_table, {indent = true}) --转成json
-            write_file(user_old_path, "")
+            delete_file(user_old_path)
             write_file(user_path, user_save) -- 写入用户数据
             tznl_path = dir_path .. "Q" .. msg.selfId .. ".json" -- 新骰娘存档位置
             tznl_old_path = old_path .. msg.selfId .. ".txt" -- 旧骰娘存档位置
@@ -133,7 +135,7 @@ function rcv_gift(msg)
             tznl_table["favor"]["favo"] = tznl_table["favor"]["favo"] + favor_once -- 好感度+1
             tznl_table["favor"]["time"] = tznl_table["favor"]["time"] + favor_once -- 次数+1
             tznl_save = json.encode(tznl_table, {indent = true}) --转成json
-            write_file(tznl_old_path, "")
+            delete_file(tznl_old_path)
             write_file(tznl_path, tznl_save) -- 写入用户数据
             total = total .. "感谢{nick}送的青蛙ovo\n累计收到了"..tznl_table["favor"]["favo"].."只啦咕嘿嘿\n{self}今天收到了"..tznl_table["favor"]["time"].."只青蛙啦\n{self}对你的某个属性上升了!"
         else
