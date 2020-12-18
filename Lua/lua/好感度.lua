@@ -259,21 +259,20 @@ function check_rank(msg)
             rank_text = rank_text .."\n【第1页\t共"..#rank_list.."页】"
         end
     else
+        local key_count = 0
         for key, value in pairs(rank_list) do
             if isnum(key) then
-                rank_list[tonumber(key)] = rank_list[key]
-                rank_list[key] = rank_list[nil]
+                key_count = key_count + 1
             end
         end
         if msg.str[1] == nil or msg.str[1] == "" then
-            rank_text = rank_list[1]
-            rank_text = rank_text .."\n【第1页\t共"..#rank_list.."页】"
-        elseif tonumber(msg.str[1]) <= #rank_list then
-            rank_text = rank_list[tonumber(msg.str[1])]
-            rank_text = rank_text .."\n【第"..tonumber(msg.str[1]).."页\t共"..#rank_list.."页】"
+            rank_text = rank_list["1"]
+            rank_text = rank_text .."\n【第1页\t共"..key_count.."页】"
+        elseif tonumber(msg.str[1]) <= key_count then
+            rank_text = rank_list[msg.str[1]]
+            rank_text = rank_text .."\n【第"..msg.str[1].."页\t共"..key_count.."页】"
         else
-            rank_text = "页码错误\n请重新输入"
-            rank_text = rank_text .."\n共"..#rank_list.."页"
+            rank_text = "您输入的页码是:"..msg.str[1].."\n【页码错误,共"..key_count.."页】"
         end
     end
     return rank_text .. "\n【每小时更新一次】"
