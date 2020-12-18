@@ -63,7 +63,7 @@ function devidepage(txt)
     quickshort(txt, 1, #txt)
     local cache, total = {}, {}
     local count, base = 1, #txt
-    local devide = 6
+    local devide = 5
     for i = #txt, 1, -1 do
         if count > devide then
             table.insert(total, table.concat(cache))
@@ -265,7 +265,7 @@ function check_rank(msg)
                 rank_list[key] = rank_list[nil]
             end
         end
-        if msg.str[1] == "" then
+        if msg.str[1] == nil or msg.str[1] == "" then
             rank_text = rank_list[1]
             rank_text = rank_text .."\n【第1页\t共"..#rank_list.."页】"
         elseif tonumber(msg.str[1]) <= #rank_list then
