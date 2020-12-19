@@ -1,3 +1,11 @@
+--[[
+  _   _   _    _   _        _                 ______                                
+ | \ | | | |  | | | |      | |               |  ____|                               
+ |  \| | | |  | | | |      | |       ______  | |__      __ _  __   __   ___    _ __ 
+ | . ` | | |  | | | |      | |      |______| |  __|    / _` | \ \ / /  / _ \  | '__|
+ | |\  | | |__| | | |____  | |____           | |      | (_| |  \ V /  | (_) | | |   
+ |_| \_|  \____/  |______| |______|          |_|       \__,_|   \_/    \___/  |_|   
+]]
 command = {}
 today_favor_max = 8 ---单日次数上限
 favor_once = 1 -- 单次好感上升
@@ -232,21 +240,21 @@ function check_favor(msg)
 end
 --[[↑琪露诺好感度用]]
 function check_rank(msg)
-    local rank_list, rank_text ,rank_path= set_path(msg)
+    local rank_list, rank_text, rank_path = set_path(msg)
     local rank_patha = rank_path .. "favor_rank_cache.json"
     rank_path = rank_path .. "favor_rank.json"
     rank_text = read_file(rank_patha)
     if rank_text == nil or rank_text == "" then
-        rank_list = {["time"]=""}
+        rank_list = {["time"] = ""}
     else
         rank_list = json.decode(rank_text, 1, nil) -- 解成table
     end
     if rank_list["time"] ~= os.date("%Y%m%d%H") then
         rank_text = read_file(rank_path)
         if rank_text == "" then
-            rank_list ={[1]="哎?现在的排行榜居然还是空的?\n快喂给{self}青蛙awa\n喂了你就上榜了ovo",["time"]= os.date("%Y%m%d%H")}
+            rank_list = {[1] = "哎?现在的排行榜居然还是空的?\n快喂给{self}青蛙awa\n喂了你就上榜了ovo", ["time"] = os.date("%Y%m%d%H")}
             rank_text = json.encode(rank_list, {indent = true}) --转成json
-            write_file(rank_patha, rank_text)--[[写入排行榜缓存存档]]
+            write_file(rank_patha, rank_text) --[[写入排行榜缓存存档]]
             rank_text = rank_list[1]
         else
             rank_list = json.decode(rank_text, 1, nil) -- 解成table
@@ -254,29 +262,32 @@ function check_rank(msg)
             rank_list = devidepage(rank_list) -- 快排
             rank_list["time"] = os.date("%Y%m%d%H") -- 缓存用的时间
             rank_text = json.encode(rank_list, {indent = true}) --转成json
-            write_file(rank_patha, rank_text)--[[写入排行榜缓存存档]]
+            write_file(rank_patha, rank_text) --[[写入排行榜缓存存档]]
+        end
+    end
+    local key_count = 0
+    for key, value in pairs(rank_list) do
+        if isnum(key) then
+            key_count = key_count + 1
+        end
+    end
+    if msg.str[1] == nil or msg.str[1] == "" or msg.str[1] == "0" then
+        rank_text = rank_list["1"]
+        if rank_text == nil then
             rank_text = rank_list[1]
-            rank_text = rank_text .."\n【第1页\t共"..#rank_list.."页】"
         end
+        rank_text = rank_text .. "\n【第1页\t共" .. key_count .. "页】"
+    elseif tonumber(msg.str[1]) <= key_count then
+        rank_text = rank_list[msg.str[1]]
+        if rank_text == nil then
+            rank_text = rank_list[tonumber(msg.str[1])]
+        end
+        rank_text = rank_text .. "\n【第" .. msg.str[1] .. "页\t共" .. key_count .. "页】"
     else
-        local key_count = 0
-        for key, value in pairs(rank_list) do
-            if isnum(key) then
-                key_count = key_count + 1
-            end
-        end
-        if msg.str[1] == nil or msg.str[1] == "" then
-            rank_text = rank_list["1"]
-            rank_text = rank_text .."\n【第1页\t共"..key_count.."页】"
-        elseif tonumber(msg.str[1]) <= key_count then
-            rank_text = rank_list[msg.str[1]]
-            rank_text = rank_text .."\n【第"..msg.str[1].."页\t共"..key_count.."页】"
-        else
-            rank_text = "您输入的页码是:"..msg.str[1].."\n【页码错误,共"..key_count.."页】"
-        end
+        rank_text = "您输入的页码是:" .. msg.str[1] .. "\n【页码错误,共" .. key_count .. "页】"
     end
     return rank_text .. "\n【每小时更新一次】"
 end
 command["喂青蛙"] = "rcv_gift"
 command["琪露诺好感度"] = "check_favor"
-command["好感度排行榜(\\d?)"] = "check_rank"
+command["好感度排行榜(\\d+)?"] = "check_rank"
