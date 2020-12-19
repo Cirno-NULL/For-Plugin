@@ -67,7 +67,7 @@ function quickshort(tb, left, right)
         quickshort(tb, low + 1, right)
     end
 end
---[[自己定制过的快速排序]]
+--[[↑自己定制过的快速排序]]
 function devidepage(txt)
     quickshort(txt, 1, #txt)
     local cache, total = {}, {}
@@ -95,7 +95,7 @@ function devidepage(txt)
     table.insert(total, table.concat(cache))
     return total
 end
---[[排行榜分页]]
+--[[↑排行榜分页]]
 function table_table(tb)
     local fixed_table = {}
     for key, value in pairs(tb) do
@@ -105,7 +105,7 @@ function table_table(tb)
     tb = nil -- 回收内存
     return fixed_table
 end
---[[转成能被快排的table]]
+--[[↑转成能被快排的table]]
 function get_old_save(path)
     local user_file = read_file(path) -- 读取用户文件内容
     local user_favor = split_favor(user_file) -- 分割成数组
@@ -237,7 +237,7 @@ function check_favor(msg)
     else
         total = total .. "(σ′▽‵)′▽‵)σ"
     end
-    return total .. "???"
+    return total
 end
 --[[↑琪露诺好感度用]]
 function check_rank(msg)
