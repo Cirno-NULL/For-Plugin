@@ -1,13 +1,75 @@
 command = {}
-local type = {"jump", "skill", "check"}
 fire = {}
-function fire.a1(type, msgs)
-    local stroy = "在很久很久以前~\n西方来了一群强盗\n将村里的月台毁了,结界也因此衰败破落\n现在,村里诞生了一名勇者\n是时候开始反击了!"
-    local go_to = {[2] = "前往演武场", [3] = "前往村长办公室"}
-    
+function fire.a0(type, msgs, save)
+    local stroy = "一切的起始\f\f\f\f\f\f\f\f\f在很久很久以前~\n西方来了一群强盗\n将村里的月台毁了,结界也因此衰败破落\n现在,村里诞生了一名勇者\n是时候开始反击了!"
+    local go_to = {["a1"] = "前往勇者小屋", ["a2"] = "前往演武场", ["a3"] = "前往村长家"}
+    if type == "stroy" then
+        return stroy
+    elseif type == "skill" then
+        return "待开发"
+    elseif type == "jump" then
+        return "待开发"
+    end
 end
+function fire.a1(type, msgs, save)
+    local stroy = "小屋里什么都没有"
+    local go_to = {["a2"] = "前往演武场", ["a3"] = "前往村长家"}
+    if type == "stroy" then
+        return stroy
+    elseif type == "skill" then
+        return "待开发"
+    elseif type == "jump" then
+        return "待开发"
+    end
+end
+function fire.a2(type, msgs, save)
+    local stroy = "你来到了演武场\n演武场早已破败不堪\n你所知道的就是在演武场的深处有一把被封印的魔剑"
+    local go_to = {["a4"] = "深入"}
+    if type == "stroy" then
+        return stroy
+    elseif type == "skill" then
+        return "待开发"
+    elseif type == "jump" then
+        return "待开发"
+    end
+end
+function fire.a3(type, msgs, save)
+    local stroy = "村长家离这里太远了,你还不足以支撑这么长途的跋涉"
+    local go_to = {["a2"] = "前往演武场"}
+    if type == "stroy" then
+        return stroy
+    elseif type == "skill" then
+        return "待开发"
+    elseif type == "jump" then
+        return "待开发"
+    end
+end
+function fire.a4(type, msgs, save)
+    local stroy = "这只是一个实验品,所以到此为止了"
+    if type == "stroy" then
+        return stroy
+    elseif type == "skill" then
+        return "待开发"
+    elseif type == "jump" then
+        return "待开发"
+    end
+end
+function main_fire(msg)
+    local save = "a1"    -- 模拟读取存档
+    local input = msg   -- 模拟消息输入
+    input = "a" .. input
+    if save == nil or save == "" then
+        save = "a0" -- 初始化存档
+    end
+    if save == input then
+        print (fire[input]("stroy",msg,save))
+    else
+        print ("jump")
+    end
+end
+main_fire(0)
 
-command["翻页测试\\s?(\\d)"] = "main"
+command[".test\\s?(\\d)"] = "main_fire"
 
 --[[
 极端环境:
