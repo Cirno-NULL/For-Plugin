@@ -1,47 +1,92 @@
 command = {}
 fire = {}
+function jump_return(type, msgs, save,go_to)
+    if go_to[msgs] ~= nil then
+        return (fire[msgs](type, msgs, save))
+    else
+        return "你目前还不能这么做"
+    end
+end
+function choose_return(save, go_to)
+    local rv = {}
+    if save["hasbeen"] == nil then
+        save["hasbeen"] = {}
+    end
+    for key, value in pairs(go_to) do
+        if save.hasbeen[key] == nil then
+            save.hasbeen[key] = 0
+        end
+        if go_to[key][2] == nil then
+            go_to[key][2] = 1
+        end
+        if save.hasbeen[key] < go_to[key][2] then
+            table.insert(rv, "\n")
+            table.insert(rv, string.sub (key,2))
+            table.insert(rv, " ：")
+            table.insert(rv, go_to[key][1])
+        end
+    end
+    return table.concat(rv)
+end
+--[[
+列出可选项目需要:
+1. 选项可用
+2. 选项在次数范围内
+]]
 function fire.a0(type, msgs, save)
     local stroy = "一切的起始\f\f\f\f\f\f\f\f\f在很久很久以前~\n西方来了一群强盗\n将村里的月台毁了,结界也因此衰败破落\n现在,村里诞生了一名勇者\n是时候开始反击了!"
-    local go_to = {["a1"] = "前往勇者小屋", ["a2"] = "前往演武场", ["a3"] = "前往村长家"}
+    local go_to = {["a1"] = {"前往勇者小屋awa"}, ["a2"] = {"前往演武场awa"}, ["a3"] = {"前往村长家awa"}}
+    local choose = choose_return(save, go_to)
     if type == "stroy" then
-        return stroy
+        return stroy .. choose
     elseif type == "skill" then
         return "待开发"
     elseif type == "jump" then
-        return "待开发"
+        return jump_return("stroy", msgs, save,go_to)
+    else
+        return "未知问题"
     end
 end
 function fire.a1(type, msgs, save)
     local stroy = "小屋里什么都没有"
-    local go_to = {["a2"] = "前往演武场", ["a3"] = "前往村长家"}
+    local go_to = {["a2"] = {"前往演武场"}, ["a3"] = {"前往村长家"}}
+    local choose = choose_return(save, go_to)
     if type == "stroy" then
-        return stroy
+        return stroy .. choose
     elseif type == "skill" then
         return "待开发"
     elseif type == "jump" then
-        return "待开发"
+        return jump_return("stroy", msgs, save,go_to)
+    else
+        return "未知问题"
     end
 end
 function fire.a2(type, msgs, save)
     local stroy = "你来到了演武场\n演武场早已破败不堪\n你所知道的就是在演武场的深处有一把被封印的魔剑"
-    local go_to = {["a4"] = "深入"}
+    local go_to = {["a4"] = {"深入"}}
+    local choose = choose_return(save, go_to)
     if type == "stroy" then
-        return stroy
+        return stroy .. choose
     elseif type == "skill" then
         return "待开发"
     elseif type == "jump" then
-        return "待开发"
+        return jump_return("stroy", msgs, save,go_to)
+    else
+        return "未知问题"
     end
 end
 function fire.a3(type, msgs, save)
     local stroy = "村长家离这里太远了,你还不足以支撑这么长途的跋涉"
-    local go_to = {["a2"] = "前往演武场"}
+    local go_to = {["a2"] = {"前往演武场"}}
+    local choose = choose_return(save, go_to)
     if type == "stroy" then
-        return stroy
+        return stroy .. choose
     elseif type == "skill" then
         return "待开发"
     elseif type == "jump" then
-        return "待开发"
+        return jump_return("stroy", msgs, save,go_to)
+    else
+        return "未知问题"
     end
 end
 function fire.a4(type, msgs, save)
@@ -49,83 +94,32 @@ function fire.a4(type, msgs, save)
     if type == "stroy" then
         return stroy
     elseif type == "skill" then
-        return "待开发"
+        return stroy
     elseif type == "jump" then
-        return "待开发"
+        return stroy
+    else
+        return stroy
     end
 end
 function main_fire(msg)
-    local save = "a1"    -- 模拟读取存档
-    local input = msg   -- 模拟消息输入
+    local save = {
+        ["save"] = "a0",
+        ["hasbeen"] = {
+            ["a0"] = 1,
+        }
+    } -- 模拟读取存档
+    local input = msg.msg[1] -- 模拟消息输入
     input = "a" .. input
-    if save == nil or save == "" then
-        save = "a0" -- 初始化存档
+    if save == nil or save.save == nil or save.save == "" then
+        save = {["save"] = "a0"} -- 初始化存档
     end
-    if save == input then
-        print (fire[input]("stroy",msg,save))
+    if save.save == input then
+        print(fire[save.save]("stroy", input, save))
     else
-        print ("jump")
+        print(fire[save.save]("jump", input, save))
     end
 end
-main_fire(0)
+local t_msg = {["msg"] = {2}}
+main_fire(t_msg) -- 模拟消息输入
 
 command[".test\\s?(\\d)"] = "main_fire"
-
---[[
-极端环境:
-    1.骰点
-        成功跳转a
-        失败后跳转b
-    2.星状路径,最多能进入四次
-        与
-    3.进入不存在的编号&进入当前页码去不了的编号
-    4.人物死亡
-]]
---[[
-预处理需要的是:
-    存档文件
-    输入消息
-书页需要输入的是:
-    1:输入类型
-    2.存档
-    3.输入内容
-书页
-    内置的是:
-        各种逻辑指令
-    外置的是:
-        故事本体
-]]
---[[
-输入模式
-    .fire
-        跳转
-        故事
-    .fire ra
-        骰点
-预处理
-    读取存档数字
-    .fire类
-        如果存档数字不等于输入编号
-            跳转标记
-        如果存档数字等于输入编号
-            故事标记
-    .firera类
-        骰点标记
-    然后输入到页面里并获取返回值输出
-页面
-    跳转标记
-        计算输入编号的可行性
-            跳转模块
-                页面次数+1
-                type转为故事标记
-
-    故事标记
-        直接输出故事
-        然后给出选项
-        选项自动减少
-        次数到了以后强制跳转
-            选项模块
-            跳转模块
-    骰点标记
-        骰点模块
-]]
