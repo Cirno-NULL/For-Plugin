@@ -1,9 +1,9 @@
 command = {}
 fire = {}
-function jump_return(type, msgs, save, go_to)
+function jump_return(msgs, save, go_to)
     if go_to[msgs] ~= nil then
         --这里可以搞一个+1计数
-        return (fire[msgs](type, msgs, save))
+        return (fire[msgs]("story", msgs, save))
     else
         return "你目前还不能这么做"
     end
@@ -47,7 +47,7 @@ function fire.a0(type, msgs, save)
     elseif type == "skill" then
         return "待开发"
     elseif type == "jump" then
-        return jump_return("stroy", msgs, save, go_to)
+        return jump_return(msgs, save, go_to)
     else
         return "未知问题"
     end
@@ -64,7 +64,7 @@ function fire.a1(type, msgs, save)
     elseif type == "skill" then
         return "待开发"
     elseif type == "jump" then
-        return jump_return("stroy", msgs, save, go_to)
+        return jump_return(msgs, save, go_to)
     else
         return "未知问题"
     end
@@ -78,11 +78,15 @@ function fire.a2(type, msgs, save)
     }
     local choose = choose_return(save, go_to)
     if type == "stroy" then
-        return stroy .. choose
+        if save.hasbeen["a2"] < 3 then
+            return stroy .. choose
+        else
+            return "\n" .. jump_return(msgs, save, go_to)
+        end
     elseif type == "skill" then
         return "待开发"
     elseif type == "jump" then
-        return jump_return("stroy", msgs, save, go_to)
+        return jump_return(msgs, save, go_to)
     else
         return "未知问题"
     end
@@ -93,7 +97,7 @@ function fire.a3(type, msgs, save)
     return stroy
 end
 function main_fire(msg)
-    local save = {} -- 模拟读取存档
+    local save = {["save"] = "a1"} -- 模拟读取存档
     local input = msg.msg[1] -- 模拟消息输入
     input = "a" .. input
     if save == nil or save.save == nil or save.save == "" then
@@ -102,10 +106,11 @@ function main_fire(msg)
     if save.save == input then
         print(fire[save.save]("stroy", input, save))
     else
+        print(save.save)
         print(fire[save.save]("jump", input, save))
     end
 end
-local t_msg = {["msg"] = {4}}
+local t_msg = {["msg"] = {2}}
 main_fire(t_msg) -- 模拟消息输入
 
 command[".test\\s?(\\d)"] = "main_fire"
