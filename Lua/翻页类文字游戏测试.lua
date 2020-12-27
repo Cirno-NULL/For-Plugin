@@ -17,7 +17,7 @@ function choose_return(save, go_to)
         if go_to[key][2] == nil then
             go_to[key][2] = 1
         end
-        if go_to[key][2] == "" then
+        if go_to[key][2] ~= nil then
             go_to[key][2] = 1
             save.hasbeen[key] = 0
         end
