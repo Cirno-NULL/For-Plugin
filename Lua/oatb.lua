@@ -164,23 +164,3 @@ command["1[aA]2[bB]\\s*(\\d{4})"] = "oatb"
 command["开始1a2b"] = "oatbse"
 command["结束1a2b"] = "oatbse"
 command["1a2b帮助"] = "help"
---[[可用的接口
-    传入参数    
-        --{0,1}全{0,1}图{0,1}介{0,1}
-        msg.msg 本条消息
-        msg.str[int] 正则表达式的第int个子表达式，为0时为原消息
-        msg.str_max 上一条中int可达到的最大值
-        msg.msgType 消息类型，0为私聊，1为群聊
-        msg.selfId 本机QQ
-        msg.fromQQ 本条消息发送者QQ
-        msg.fromGroup 本条消息所在群号
-        msg.tergetId 如果为私聊则为本条消息发送者QQ，否则为本条消息所在群号
-        msg.fromQQTrust 本条消息发送者的信任度
-        msg.fromQQInfo 本条消息发送者的群内权限，0为私聊，1为群员，2为管理，3为群主
-    dice模块
-        dice.draw(msg)
-        dice.send(msg,tergetId,msgType)
-        dice.int2string(msg)
-        dice.rd(msg)
-        dice.md5(msg)
-]]
