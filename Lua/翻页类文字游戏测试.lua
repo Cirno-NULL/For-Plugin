@@ -9,9 +9,9 @@ function jump_return(msgs, save, go_to)
     end
 end
 function choose_return(save, go_to)
-    local rv = {}
-    if save["hasbeen"] == nil then
-        save["hasbeen"] = {}
+    local rv = save
+    if rv["hasbeen"] == nil then
+        rv["hasbeen"] = {}
     end
     for key, value in pairs(go_to) do
         if go_to[key][2] == nil then
@@ -19,12 +19,12 @@ function choose_return(save, go_to)
         end
         if go_to[key][2] ~= nil then
             go_to[key][2] = 1
-            save.hasbeen[key] = 0
+            rv.hasbeen[key] = 0
         end
-        if save.hasbeen[key] == nil then
-            save.hasbeen[key] = 0
+        if rv.hasbeen[key] == nil then
+            rv.hasbeen[key] = 0
         end
-        if save.hasbeen[key] < go_to[key][2] then
+        if rv.hasbeen[key] < go_to[key][2] then
             table.insert(rv, "\n")
             table.insert(rv, string.sub(key, 2))
             table.insert(rv, " ：")
@@ -78,11 +78,10 @@ function fire.a2(type, msgs, save)
     }
     local choose = choose_return(save, go_to)
     if type == "stroy" then
-        print(save.hasbeen["a2"])
         if save.hasbeen["a2"] < 3 then
             return stroy .. choose
         else
-            return go_to.a3[1].."\n\n"..jump_return("a3", save, go_to)
+            return go_to.a3[1].."\n"..jump_return("a3", save, go_to)
         end
     elseif type == "skill" then
         return "待开发"
@@ -111,7 +110,6 @@ function main_fire(msg)
     if save.save == input then
         print(fire[save.save]("stroy", input, save))
     else
-        print(save.hasbeen["a2"]..save.save)
         print(fire[save.save]("jump", input, save))
     end
 end
