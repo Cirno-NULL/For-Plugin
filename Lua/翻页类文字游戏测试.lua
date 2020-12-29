@@ -77,7 +77,7 @@ function fire.a2(type, msgs, save)
     local go_to = {
         -- 这里是这一页的选项
         ["a0"] = {"是的", ""},
-        ["a1"] = {"不", ""},
+        ["a1"] = {"不", ""}
     }
     if type == "stroy" then
         --[[如果是故事模式,
@@ -87,8 +87,8 @@ function fire.a2(type, msgs, save)
         if isnum(save.hasbeen["a2"]) == false or save.hasbeen["a2"] < 3 then
             return stroy .. choose_return(save, go_to)
         else
-            go_to.a3={"想得美，你无论如何也得给我下去！"}
-            return "想得美，你无论如何也得给我下去！\n" .. jump_return("a3", save, go_to)
+            go_to.a3 = {"想得美，你无论如何也得给我下去！"}
+            return go_to.a3[1] .. "\n" .. jump_return("a3", save, go_to)
         end
     elseif type == "jump" then -- 如果是跳转模式
         return jump_return(msgs, save, go_to)
@@ -104,10 +104,10 @@ end
 function main_fire(msg)
     local rv = ""
     local save = nil
-    local save = {
-        ["save"] = "a1",
-        ["hasbeen"] = {["a2"] = 3}
-    }
+    -- local save = {
+        -- ["save"] = "a1",
+        -- ["hasbeen"] = {["a2"] = 3}
+    -- }
     -- 模拟读取存档并转成json后的table
     local input = msg.str[1]
     input = "a" .. input
@@ -118,7 +118,7 @@ function main_fire(msg)
         save.hasbeen = {} -- 初始化存档
     end
     if save.save == nil or save.save == "" then
-        save.save ="a0"
+        save.save = "a0"
         rv = rv .. "当前无存档,默认进入初始位置\n"
         rv = rv .. (fire[save.save]("stroy", "a0", save))
     elseif save.save == input then
