@@ -3,13 +3,14 @@ fire = {}
 function jump_return(msgs, save, go_to)
     if go_to[msgs] ~= nil then
         --这里可以搞一个+1计数
-        return (fire[msgs]("stroy", msgs, save))
+        return fire[msgs]("stroy", msgs, save)
     else
         return "你目前还不能这么做"
     end
 end
 function choose_return(save, go_to)
-    local rv = save
+    local rv = {}
+    rv = save
     if rv["hasbeen"] == nil then
         rv["hasbeen"] = {}
     end
@@ -34,16 +35,15 @@ function choose_return(save, go_to)
     return table.concat(rv)
 end
 --[[
-列出可选项目需要:
-1. 选项可用
-2. 选项在次数范围内
+这里功能纯化,只返回类似ink里的+和*的类别
+需要额外的特殊规则去自定义去
 ]]
 function fire.a0(type, msgs, save)
     local stroy = "你站在城镇的门口"
     local go_to = {["a1"] = {"前往地牢，让我们出发吧！"}}
-    local choose = choose_return(save, go_to)
+
     if type == "stroy" then
-        return stroy .. choose
+        return stroy .. choose_return(save, go_to)
     elseif type == "skill" then
         return "待开发"
     elseif type == "jump" then
@@ -58,9 +58,9 @@ function fire.a1(type, msgs, save)
         ["a3"] = {"进入地牢"},
         ["a2"] = {"返回城镇", ""}
     }
-    local choose = choose_return(save, go_to)
+
     if type == "stroy" then
-        return stroy .. choose
+        return stroy .. choose_return(save, go_to)
     elseif type == "skill" then
         return "待开发"
     elseif type == "jump" then
@@ -76,12 +76,12 @@ function fire.a2(type, msgs, save)
         ["a1"] = {"不", ""},
         ["a3"] = {"想得美，你无论如何也得给我下去！"}
     }
-    local choose = choose_return(save, go_to)
+
     if type == "stroy" then
         if save.hasbeen["a2"] < 3 then
-            return stroy .. choose
+            return stroy .. choose_return(save, go_to)
         else
-            return go_to.a3[1].."\n"..jump_return("a3", save, go_to)
+            return go_to.a3[1] .. "\n" .. jump_return("a3", save, go_to)
         end
     elseif type == "skill" then
         return "待开发"
@@ -98,7 +98,7 @@ function fire.a3(type, msgs, save)
 end
 function main_fire(msg)
     local save = {
-        ["save"] = "a2",
+        ["save"] = "a1",
         ["hasbeen"] = {["a2"] = 3}
     }
     -- 模拟读取存档
@@ -108,12 +108,11 @@ function main_fire(msg)
         save = {["save"] = "a0"} -- 初始化存档
     end
     if save.save == input then
-        print(fire[save.save]("stroy", input, save))
+        return (fire[save.save]("stroy", input, save))
     else
-        print(fire[save.save]("jump", input, save))
+        return (fire[save.save]("jump", input, save))
     end
 end
 local t_msg = {["msg"] = {2}}
-main_fire(t_msg) -- 模拟消息输入
-
+print(main_fire(t_msg)) -- 模拟消息输入并返回的过程
 command[".test\\s?(\\d)"] = "main_fire"
