@@ -11,10 +11,6 @@ command = {}
 today_favor_max = 8 ---单日次数上限
 favor_once = 1 -- 单次好感上升
 local json = require("dkjson")
-function mkDirs(path)
-    os.execute('mkdir "' .. path .. '"')
-end
---[[初始化文件路径]]
 function read_file(path)
     local text = ""
     local file = io.open(path, "r") -- 打开了文件读写路径
