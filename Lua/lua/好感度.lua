@@ -13,7 +13,7 @@ favor_once = 1 -- 单次好感上升
 local json = require("dkjson")
 function read_file(path)
     local text = ""
-    local file = io.open(path, "r") -- 打开了文件读写路径
+    local file = io.open(dice.UTF8toGBK(path), "r") -- 打开了文件读写路径
     if (file ~= nil) then -- 如果文件不是空的
         text = file.read(file, "*a") -- 读取内容
         io.close(file) -- 关闭文件
@@ -22,13 +22,13 @@ function read_file(path)
 end
 --[[↑读取对应的文件]]
 function write_file(path, text)
-    local file = io.open(path, "w") -- 以只写的方式
+    local file = io.open(dice.UTF8toGBK(path), "w") -- 以只写的方式
     file.write(file, text) -- 写入内容
     io.close(file) -- 关闭文件
 end
 --[[↑写入对应的文件]]
 function delete_file(path)
-    os.remove(path)
+    os.remove(dice.UTF8toGBK(path))
 end
 --[[↑删除文件,请谨慎使用]]
 function split_favor(s)
