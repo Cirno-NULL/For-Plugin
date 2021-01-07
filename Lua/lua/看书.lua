@@ -2,7 +2,7 @@ command = {}
 local json = require("dkjson")
 function read_file(path)
     local text = ""
-    local file = io.open(path, "r") -- 打开了文件读写路径
+    local file = io.open(dice.UTF8toGBK(path), "r") -- 打开了文件读写路径
     if (file ~= nil) then -- 如果文件不是空的
         text = file.read(file, "*a") -- 读取内容
         io.close(file) -- 关闭文件
@@ -11,7 +11,7 @@ function read_file(path)
 end
 --[[↑读取对应的文件]]
 function write_file(path, text)
-    local file = io.open(path, "w") -- 以只写的方式
+    local file = io.open(dice.UTF8toGBK(path), "w") -- 以只写的方式
     file.write(file, text) -- 写入内容
     io.close(file) -- 关闭文件
 end
@@ -135,7 +135,13 @@ function read_book(msg)
         table_json = set_save(table_json)
     end
     if table_json["read"]["data"][table_json["read"]["top"]] ~= "f" then
-        total = total .. dice.draw("{道德经}") .. "\n在{nick}看完后，书猛地合上了" .. "\n"
+        local rand=dice.rd("1d2")
+        if rand==1 then
+            total = total .."道德经" ..dice.draw("{道德经}") .. "\n在{nick}看完后，书猛地合上了" .. "\n"
+        else
+            total = total .. dice.draw("{孙子兵法}") .. "\n在{nick}看完后，书猛地合上了" .. "\n"
+        end
+        
         table_json["read"]["top"] = table_json["read"]["top"] + 1
     else
         total = total .. "无穷无尽的知识向你扑面而来\n在如此庞大的知识量的冲击下\n晕了过去..."
