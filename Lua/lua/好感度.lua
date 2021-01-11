@@ -151,7 +151,7 @@ function set_path()
     local dir_path = dice.DiceDir() .. "\\user\\Cirno_plugin\\qq\\" -- 这里设置一下新存档的初始地址
     local rank_path = dice.DiceDir() .. "\\user\\Cirno_plugin\\public\\" -- 这里是排行榜的初始地址
     dice.mkDir(dir_path) -- 初始化存档路径
-    dice.mkDir(rank_path) -- 初始化排行榜路径--才起了个头
+    dice.mkDir(rank_path) -- 初始化排行榜路径
     return old_path, dir_path,rank_path
 end
 --[[↑初始化地址]]
