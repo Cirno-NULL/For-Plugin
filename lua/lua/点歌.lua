@@ -17,7 +17,7 @@ function write_file(path, text)
 end
 --[[↑写入对应的文件]]
 function test(Msg)
-    local base_path = dice.DiceDir() .. "\\user\\Cirno_plugin\\163music\\" --搜歌路径
+    local base_path = dice.DiceDir() .. "\\user\\Cirno_plugin\\publick\\163music\\" --搜歌路径
     local dir_path = base_path .. "discuss\\" --热评路径
     local file_path = base_path .. "163music" .. ".json" --缓存歌曲路径
     dice.mkDir(dir_path)
@@ -32,21 +32,6 @@ function test(Msg)
     end
     local songid = songinfo.result.songs[1].id --读取songid
     rv = rv .. "https://y.music.163.com/m/song/" .. songid --合成网址
-
-    local songinfo = read_file(file_path) --优先读取缓存文件
-    if songinfo == "" or songinfo == nil then
-        url = "http://music.163.com/api/v1/resource/comments/R_SO_4_" .. songid .. "?limit=10&offset=0" --热评api
-        file_path = dir_path .. songid .. ".json" -- 合成热评路径
-        dice.fDownWebPage(url, file_path) -- 下载热评
-        songinfo = read_file(file_path) -- 读取
-    end
-    local songinfo = json.decode(songinfo, 1, nil) -- 解成table
-    if #songinfo.hotComments == 0 then
-        rv = rv .. "\f当前歌曲无热评ovo"
-    else
-        local rdnum = math.random(#songinfo.hotComments)
-        rv = rv .. "\f随机热评" .. rdnum .. ":\n" .. songinfo.hotComments[rdnum].content
-    end
     return rv
 end
 command["点歌\\s?(.+)"] = "test"
