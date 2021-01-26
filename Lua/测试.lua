@@ -9,16 +9,18 @@ function read_file(path)
     end
     return text
 end
---[[↑读取对应路径的文件]]
-function test(Msg)
-    local file_path = dice.DiceDir() .. "\\conf\\CustomReply.json"
-    local text_json = read_file(file_path)
-    local tbl, pos, err = json.decode(text_json, 1, nil)
-    local fixed_table = {}
-    for key, value in pairs(tbl) do
-        table.insert(fixed_table, key)
-    end
-    tbl = nil -- 回收内存
-    return table.concat( fixed_table,",")
+--[[↑读取对应的文件]]
+function write_file(path, text)
+    local file = io.open(dice.UTF8toGBK(path), "w") -- 以只写的方式
+    file.write(file, text) -- 写入内容
+    io.close(file) -- 关闭文件
 end
-command["当前tia的回复词"] = "test"
+--[[↑写入对应的文件]]
+function delete_file(path)
+    os.remove(dice.UTF8toGBK(path))
+end
+--[[↑删除文件,请谨慎使用]]
+function create_deck()
+    
+end
+command["创建牌堆"] = "create_deck"
