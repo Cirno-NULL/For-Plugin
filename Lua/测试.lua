@@ -1,7 +1,6 @@
 command = {}
 -- local json = require("dkjson")
 local null = require("cirno")
-
 function CreateDeck(Msg)
     local file_path = dice.DiceDir() .. "\\conf\\CustomReply.json"
     local text_json = null.ReadFile(file_path)
