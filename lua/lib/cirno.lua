@@ -1,3 +1,4 @@
+-- 未完待续,用出问题了不负责
 -- 定义一个名为 Null 的模块
 Null = {}
 function Null.ReadFile(path)

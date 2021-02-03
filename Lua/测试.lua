@@ -1,6 +1,6 @@
 command = {}
 -- local json = require("dkjson")
-local null = require("cirno")
+sqlite3 = require('lsqlite3')
 function CreateDeck(Msg)
     local file_path = dice.DiceDir() .. "\\conf\\CustomReply.json"
     local text_json = null.ReadFile(file_path)
