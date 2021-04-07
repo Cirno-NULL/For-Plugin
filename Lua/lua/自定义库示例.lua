@@ -30,4 +30,4 @@ function StringToTable()
   local text = ".。Oʘ⊛🅞"
   return "总计字符个数:" .. #Null.StringToTable(text)
 end
-command["测试"] = "StringToTable"
+command["自定义库"] = "StringToTable"

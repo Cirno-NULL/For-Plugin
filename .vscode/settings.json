@@ -1,5 +1,6 @@
 {
     "Lua.diagnostics.globals": [
         "dice"
-    ]
+    ],
+    "cmake.configureOnOpen": true
 }
